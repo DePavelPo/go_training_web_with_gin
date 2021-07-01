@@ -6,6 +6,8 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/DePavelPo/go_training_web_with_gin/internal/article"
 )
 
 // Test that a GET request to the home page returns the home page with
@@ -13,7 +15,7 @@ import (
 func TestShowIndexPageUnauthenticated(t *testing.T) {
 	r := getRouter(true)
 
-	r.GET("/", showIndexPage)
+	r.GET("/", article.ShowIndexPage)
 
 	// Create a request to send to the above route
 	req, _ := http.NewRequest("GET", "/", nil)

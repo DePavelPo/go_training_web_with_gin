@@ -3,8 +3,8 @@ package tests
 import (
 	"testing"
 
-	"github.com/DePavelPo/go_training_web_with_gin/main/article"
-	"github.com/DePavelPo/go_training_web_with_gin/main/models"
+	"github.com/DePavelPo/go_training_web_with_gin/internal/article"
+	"github.com/DePavelPo/go_training_web_with_gin/internal/models"
 )
 
 func TestGetAllArticles(t *testing.T) {

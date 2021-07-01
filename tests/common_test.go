@@ -6,10 +6,12 @@ import (
 	"os"
 	"testing"
 
+	"github.com/DePavelPo/go_training_web_with_gin/internal/article"
+	"github.com/DePavelPo/go_training_web_with_gin/internal/models"
 	"github.com/gin-gonic/gin"
 )
 
-var tmpArticleList []article
+var tmpArticleList []models.Article
 
 // This function is used for setup before executing the test functions
 func TestMain(m *testing.M) {
@@ -46,10 +48,10 @@ func testHTTPResponse(t *testing.T, r *gin.Engine, req *http.Request, f func(w *
 // This function is used to store the main lists into the temporary one
 // for testing
 func saveLists() {
-	tmpArticleList = articleList
+	tmpArticleList = article.ArticleList
 }
 
 // This function is used to restore the main lists from the temporary one
 func restoreLists() {
-	articleList = tmpArticleList
+	article.ArticleList = tmpArticleList
 }
