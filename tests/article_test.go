@@ -54,15 +54,17 @@ func TestGetAllArticles(t *testing.T) {
 		if len(retArticleList) != len(articleList) {
 			t.Fatalf("Сontent Fail Test : Different sizes of arrays, must be the same")
 		}
-
+		var fail = true
 		for i, v := range retArticleList {
 			if v.Content != articleList[i].Content ||
 				v.ID != articleList[i].ID ||
 				v.Title != articleList[i].Title {
-				t.Skip()
+				fail = false
 			}
 		}
-		t.Errorf("Сontent Fail Test : Array contents match, but must not match")
+		if fail == true {
+			t.Errorf("Сontent Fail Test : Array contents match, but must not match")
+		}
 	})
 
 }

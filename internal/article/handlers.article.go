@@ -11,21 +11,10 @@ func ShowIndexPage(c *gin.Context) {
 
 	articles := GetAllArticles()
 
-	// Call the HTML method of the Context to render a template
-	c.HTML(
-
-		// Set the HTTP status to 200 (OK)
-		http.StatusOK,
-
-		// Use the index.html template
-		"index.html",
-
-		// Pass the data that the page uses (in this case, 'title')
-		gin.H{
-			"title":   "Home Page",
-			"payload": articles,
-		},
-	)
+	// Call the render function with the name of the template to render
+	Render(c, gin.H{
+		"title":   "Home Page",
+		"payload": articles}, "index.html")
 }
 
 func GetArticle(c *gin.Context) {
@@ -33,18 +22,11 @@ func GetArticle(c *gin.Context) {
 	if articleID, err := strconv.Atoi(c.Param("article_id")); err == nil {
 		// Проверим существование топика
 		if article, err := GetArticleByID(articleID); err == nil {
-			// Вызовем метод HTML из Контекста Gin для обработки шаблона
-			c.HTML(
-				// Зададим HTTP статус 200 (OK)
-				http.StatusOK,
-				// Используем шаблон index.html
-				"article.html",
-				// Передадим данные в шаблон
-				gin.H{
-					"title":   article.Title,
-					"payload": article,
-				},
-			)
+			// Call the render function with the title, article and the name of the
+			// template
+			Render(c, gin.H{
+				"title":   article.Title,
+				"payload": article}, "article.html")
 
 		} else {
 			// Если топика нет, прервём с ошибкой
@@ -55,4 +37,23 @@ func GetArticle(c *gin.Context) {
 		// При некорректном ID в URL, прервём с ошибкой
 		c.AbortWithStatus(http.StatusNotFound)
 	}
+}
+
+// Render one of HTML, JSON or CSV based on the 'Accept' header of the request
+// If the header doesn't specify this, HTML is rendered, provided that
+// the template name is present
+func Render(c *gin.Context, data gin.H, templateName string) {
+
+	switch c.Request.Header.Get("Accept") {
+	case "application/json":
+		// Respond with JSON
+		c.JSON(http.StatusOK, data["payload"])
+	case "application/xml":
+		// Respond with XML
+		c.XML(http.StatusOK, data["payload"])
+	default:
+		// Respond with HTML
+		c.HTML(http.StatusOK, templateName, data)
+	}
+
 }

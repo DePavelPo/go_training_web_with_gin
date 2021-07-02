@@ -26,7 +26,7 @@ func TestMain(m *testing.M) {
 func getRouter(withTemplates bool) *gin.Engine {
 	r := gin.Default()
 	if withTemplates {
-		r.LoadHTMLGlob("templates/*")
+		r.LoadHTMLGlob("/home/pavelmuslimov/Desktop/GitHub-repos/go_training_web_with_gin/cmd/templates/*")
 	}
 	return r
 }
