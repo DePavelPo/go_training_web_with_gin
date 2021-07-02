@@ -9,16 +9,29 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/DePavelPo/go_training_web_with_gin/internal/article"
+	"github.com/DePavelPo/go_training_web_with_gin/internal/handler"
 	"github.com/DePavelPo/go_training_web_with_gin/internal/models"
+	"github.com/DePavelPo/go_training_web_with_gin/internal/repository"
+	"github.com/DePavelPo/go_training_web_with_gin/internal/service"
 )
 
 // Test that a GET request to the home page returns the home page with
 // the HTTP code 200 for an unauthenticated user
 func TestShowIndexPageUnauthenticated(t *testing.T) {
+
+	client := repository.NewClient()
+
+	repository := repository.NewRepository(client)
+
+	service := service.NewService(repository)
+
 	r := getRouter(true)
 
-	r.GET("/", article.ShowIndexPage)
+	handler.NewHandler(service, r)
+
+	srv := &handler.Handler{Service: service}
+
+	r.GET("/", srv.ShowIndexPage)
 
 	// Create a request to send to the above route
 	req, _ := http.NewRequest("GET", "/", nil)
@@ -40,10 +53,21 @@ func TestShowIndexPageUnauthenticated(t *testing.T) {
 // Test that a GET request to the home page returns the list of articles
 // in JSON format when the Accept header is set to application/json
 func TestArticleListJSON(t *testing.T) {
+
+	client := repository.NewClient()
+
+	repository := repository.NewRepository(client)
+
+	service := service.NewService(repository)
+
 	r := getRouter(true)
 
+	handler.NewHandler(service, r)
+
+	srv := &handler.Handler{Service: service}
+
 	// Define the route similar to its definition in the routes file
-	r.GET("/", article.ShowIndexPage)
+	r.GET("/", srv.ShowIndexPage)
 
 	// Create a request to send to the above route
 	req, _ := http.NewRequest("GET", "/", nil)
@@ -69,10 +93,21 @@ func TestArticleListJSON(t *testing.T) {
 // Test that a GET request to an article page returns the article in XML
 // format when the Accept header is set to application/xml
 func TestArticleXML(t *testing.T) {
+
+	client := repository.NewClient()
+
+	repository := repository.NewRepository(client)
+
+	service := service.NewService(repository)
+
 	r := getRouter(true)
 
+	handler.NewHandler(service, r)
+
+	srv := &handler.Handler{Service: service}
+
 	// Define the route similar to its definition in the routes file
-	r.GET("/article/view/:article_id", article.GetArticle)
+	r.GET("/article/view/:article_id", srv.GetArticle)
 
 	// Create a request to send to the above route
 	req, _ := http.NewRequest("GET", "/article/view/1", nil)

@@ -1,4 +1,4 @@
-package article
+package service
 
 import (
 	"errors"
@@ -11,12 +11,12 @@ var ArticleList = []models.Article{
 	{ID: 2, Title: "Article 2", Content: "Article 2 body"},
 }
 
-func GetAllArticles() []models.Article {
+func (s *service) GetAllArticles() []models.Article {
 
 	return ArticleList
 }
 
-func GetArticleByID(id int) (*models.Article, error) {
+func (s *service) GetArticleByID(id int) (*models.Article, error) {
 	for _, a := range ArticleList {
 		if a.ID == id {
 			return &a, nil

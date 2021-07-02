@@ -6,8 +6,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/DePavelPo/go_training_web_with_gin/internal/article"
 	"github.com/DePavelPo/go_training_web_with_gin/internal/models"
+	"github.com/DePavelPo/go_training_web_with_gin/internal/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,7 +26,7 @@ func TestMain(m *testing.M) {
 func getRouter(withTemplates bool) *gin.Engine {
 	r := gin.Default()
 	if withTemplates {
-		r.LoadHTMLGlob("/home/pavelmuslimov/Desktop/GitHub-repos/go_training_web_with_gin/cmd/templates/*")
+		r.LoadHTMLGlob("/home/pavelmuslimov/Desktop/GitHub-repos/go_training_web_with_gin/internal/app/templates/*")
 	}
 	return r
 }
@@ -48,10 +48,10 @@ func testHTTPResponse(t *testing.T, r *gin.Engine, req *http.Request, f func(w *
 // This function is used to store the main lists into the temporary one
 // for testing
 func saveLists() {
-	tmpArticleList = article.ArticleList
+	tmpArticleList = service.ArticleList
 }
 
 // This function is used to restore the main lists from the temporary one
 func restoreLists() {
-	article.ArticleList = tmpArticleList
+	service.ArticleList = tmpArticleList
 }

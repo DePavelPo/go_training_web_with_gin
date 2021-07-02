@@ -3,11 +3,18 @@ package tests
 import (
 	"testing"
 
-	"github.com/DePavelPo/go_training_web_with_gin/internal/article"
 	"github.com/DePavelPo/go_training_web_with_gin/internal/models"
+	"github.com/DePavelPo/go_training_web_with_gin/internal/repository"
+	"github.com/DePavelPo/go_training_web_with_gin/internal/service"
 )
 
 func TestGetAllArticles(t *testing.T) {
+
+	client := repository.NewClient()
+
+	repository := repository.NewRepository(client)
+
+	service := service.NewService(repository)
 
 	t.Run("Success", func(t *testing.T) {
 		var articleList = []models.Article{
@@ -15,7 +22,7 @@ func TestGetAllArticles(t *testing.T) {
 			{ID: 2, Title: "Article 2", Content: "Article 2 body"},
 		}
 
-		retArticleList := article.GetAllArticles()
+		retArticleList := service.GetAllArticles()
 
 		if len(retArticleList) != len(articleList) {
 			t.Fatalf("Success Test : Different sizes of arrays, must be the same")
@@ -32,11 +39,12 @@ func TestGetAllArticles(t *testing.T) {
 	})
 
 	t.Run("ArrayLenFail", func(t *testing.T) {
+
 		var articleList = []models.Article{
 			{ID: 1, Title: "Article 1", Content: "Article 1 body"},
 		}
 
-		retArticleList := article.GetAllArticles()
+		retArticleList := service.GetAllArticles()
 
 		if len(retArticleList) == len(articleList) {
 			t.Errorf("Array Len Fail Test : Same sizes of arrays, must be the different")
@@ -49,7 +57,7 @@ func TestGetAllArticles(t *testing.T) {
 			{ID: 1, Title: "Article 2", Content: "Article 2 body"},
 		}
 
-		retArticleList := article.GetAllArticles()
+		retArticleList := service.GetAllArticles()
 
 		if len(retArticleList) != len(articleList) {
 			t.Fatalf("Сontent Fail Test : Different sizes of arrays, must be the same")
