@@ -12,12 +12,26 @@ import (
 	"github.com/DePavelPo/go_training_web_with_gin/internal/handler"
 	"github.com/DePavelPo/go_training_web_with_gin/internal/repository"
 	"github.com/DePavelPo/go_training_web_with_gin/internal/service"
+
+	_ "github.com/lib/pq"
+
 	"github.com/gin-gonic/gin"
+	"github.com/pressly/goose"
 )
 
 func Run() {
 
 	var router *gin.Engine
+
+	db, err := goose.OpenDBWithDriver("postgres", "postgres://pahan:pahan123@localhost:5432/training_gin?sslmode=disable")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	defer db.Close()
+
+	if err := goose.Run("up", db, "migrations", ""); err != nil {
+		log.Fatal(err)
+	}
 
 	client := repository.NewClient()
 
@@ -30,7 +44,7 @@ func Run() {
 
 	// Process the templates at the start so that they don't have to be loaded
 	// from the disk again. This makes serving HTML pages very fast.
-	router.LoadHTMLGlob("/home/pavelmuslimov/Desktop/GitHub-repos/go_training_web_with_gin/internal/app/templates/*")
+	router.LoadHTMLGlob("github.com/DePavelPo/go_training_web_with_gin/templates/*")
 
 	handler.NewHandler(service, router)
 
@@ -39,7 +53,7 @@ func Run() {
 	// standalone functions that will be used as route handlers.
 
 	// Start serving the application
-	err := router.Run()
+	err = router.Run()
 	if err != nil {
 		log.Fatal(err.Error())
 	}

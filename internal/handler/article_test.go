@@ -1,4 +1,4 @@
-package tests
+package handler
 
 import (
 	"encoding/json"
@@ -9,29 +9,29 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/DePavelPo/go_training_web_with_gin/internal/handler"
 	"github.com/DePavelPo/go_training_web_with_gin/internal/models"
 	"github.com/DePavelPo/go_training_web_with_gin/internal/repository"
 	"github.com/DePavelPo/go_training_web_with_gin/internal/service"
+	//"github.com/DePavelPo/go_training_web_with_gin/internal/service"
 )
 
 // Test that a GET request to the home page returns the home page with
 // the HTTP code 200 for an unauthenticated user
 func TestShowIndexPageUnauthenticated(t *testing.T) {
 
-	client := repository.NewClient()
+	//client := repository.NewClient()
 
-	repository := repository.NewRepository(client)
+	//repository := repository.NewRepository(client)
 
-	service := service.NewService(repository)
+	//service := service.NewService(repository)
 
 	r := getRouter(true)
 
-	handler.NewHandler(service, r)
+	NewHandler(service, r)
 
-	srv := &handler.Handler{Service: service}
+	//srv := Handler{Service: service}
 
-	r.GET("/", srv.ShowIndexPage)
+	r.GET("/", ShowIndexPage)
 
 	// Create a request to send to the above route
 	req, _ := http.NewRequest("GET", "/", nil)
@@ -62,9 +62,7 @@ func TestArticleListJSON(t *testing.T) {
 
 	r := getRouter(true)
 
-	handler.NewHandler(service, r)
-
-	srv := &handler.Handler{Service: service}
+	srv := Handler{Service: service}
 
 	// Define the route similar to its definition in the routes file
 	r.GET("/", srv.ShowIndexPage)
@@ -102,9 +100,7 @@ func TestArticleXML(t *testing.T) {
 
 	r := getRouter(true)
 
-	handler.NewHandler(service, r)
-
-	srv := &handler.Handler{Service: service}
+	srv := Handler{Service: service}
 
 	// Define the route similar to its definition in the routes file
 	r.GET("/article/view/:article_id", srv.GetArticle)

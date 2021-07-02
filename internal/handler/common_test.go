@@ -1,4 +1,4 @@
-package tests
+package handler
 
 import (
 	"net/http"
@@ -26,7 +26,7 @@ func TestMain(m *testing.M) {
 func getRouter(withTemplates bool) *gin.Engine {
 	r := gin.Default()
 	if withTemplates {
-		r.LoadHTMLGlob("/home/pavelmuslimov/Desktop/GitHub-repos/go_training_web_with_gin/internal/app/templates/*")
+		r.LoadHTMLGlob("github.com/DePavelPo/go_training_web_with_gin/templates/*")
 	}
 	return r
 }
