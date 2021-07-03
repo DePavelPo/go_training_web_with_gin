@@ -11,27 +11,26 @@ import (
 
 	"github.com/DePavelPo/go_training_web_with_gin/internal/models"
 	"github.com/DePavelPo/go_training_web_with_gin/internal/repository"
-	"github.com/DePavelPo/go_training_web_with_gin/internal/service"
-	//"github.com/DePavelPo/go_training_web_with_gin/internal/service"
+	serv "github.com/DePavelPo/go_training_web_with_gin/internal/service"
 )
 
 // Test that a GET request to the home page returns the home page with
 // the HTTP code 200 for an unauthenticated user
 func TestShowIndexPageUnauthenticated(t *testing.T) {
 
-	//client := repository.NewClient()
+	client := repository.NewClient()
 
-	//repository := repository.NewRepository(client)
+	repository := repository.NewRepository(client)
 
-	//service := service.NewService(repository)
+	service := serv.NewService(repository)
 
 	r := getRouter(true)
 
-	NewHandler(service, r)
+	//NewHandler(service, r)
 
-	//srv := Handler{Service: service}
+	srv := Handler{Service: service}
 
-	r.GET("/", ShowIndexPage)
+	r.GET("/", srv.ShowIndexPage)
 
 	// Create a request to send to the above route
 	req, _ := http.NewRequest("GET", "/", nil)
@@ -58,7 +57,7 @@ func TestArticleListJSON(t *testing.T) {
 
 	repository := repository.NewRepository(client)
 
-	service := service.NewService(repository)
+	service := serv.NewService(repository)
 
 	r := getRouter(true)
 
@@ -96,7 +95,7 @@ func TestArticleXML(t *testing.T) {
 
 	repository := repository.NewRepository(client)
 
-	service := service.NewService(repository)
+	service := serv.NewService(repository)
 
 	r := getRouter(true)
 
